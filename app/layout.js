@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 // app/layout.js (ルートレイアウト)
 // export default function RootLayout({ children }) {
 //   return (
@@ -41,4 +39,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
->>>>>>> 6c50c2a (first commit)
