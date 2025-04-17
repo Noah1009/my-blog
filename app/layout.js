@@ -10,7 +10,7 @@
 // app/layout.js
 
 import "styles/global.css";
-import "styles/layout.module.css";
+// import "styles/layout.module.css";
 import Header from "@components/header";
 import Footer from "@components/footer";
 import Meta from "@components/meta";
