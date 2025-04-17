@@ -1,0 +1,21 @@
+/* styles/nav.module.css */
+.list {
+  display: flex;
+  gap: 2em;
+}
+
+/* PC向けのhoverスタイル */
+.list a:hover {
+  color: var(--accent);
+}
+
+/* モバイル向けに;hover スタイルを無効にする */
+@media (hover: none) {
+  .list a {
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* タップ時のスタイルはactiveで指定 */
+  .list a:active {
+    color: var(--accent);
+  }
+}
