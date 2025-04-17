@@ -75,3 +75,7 @@
     text-decoration: none;
   }
 }
+
+body {
+  padding: 2rem !important;
+}
