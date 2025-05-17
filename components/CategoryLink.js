@@ -5,11 +5,12 @@
 import Link from "next/link";
 import { event } from "@/lib/gtag";
 
-export default function CategoryLink({ slug, name, className, count }) {
+export default function CategoryLink({ slug, name, className = "", count }) {
   return (
     <Link
       href={`/blog/category/${slug}`}
       className={className}
+      aria-label={`カテゴリー: ${name}`}
       onClick={() =>
         event({
           action: "click_category",
@@ -19,7 +20,7 @@ export default function CategoryLink({ slug, name, className, count }) {
       }
     >
       <span className="category-name">{name}</span>
-      {count && <span className="category-count">{count}件</span>}
+      {count != null && <span className="category-count">{count}件</span>}
     </Link>
   );
 }

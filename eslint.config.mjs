@@ -1,14 +1,16 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
+// eslint.config.js
 import { FlatCompat } from "@eslint/eslintrc";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
+// __dirname の代用
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// FlatCompatインスタンスの作成
 const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [...compat.extends("next/core-web-vitals")];
-
-export default eslintConfig;
+// エクスポートするeslint設定
+export default [...compat.extends("next/core-web-vitals")];

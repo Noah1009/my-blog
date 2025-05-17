@@ -1,4 +1,5 @@
 // app/blog/[slug]/page.js
+
 import { getPostBySlug, getAllSlugs, getAllPosts } from "@/lib/api";
 import { getPrevNextPosts } from "@/lib/prev-next-post";
 import { extractText } from "@/lib/extract-text";
@@ -12,9 +13,10 @@ import {
   TwoColumn,
   TwoColumnMain,
   TwoColumnSidebar,
-} from "@/components/two-column.js";
+} from "@/components/two-column";
 import PostCategories from "@/components/post-categories";
 import Image from "next/image";
+import { siteMeta } from "@/lib/constants";
 
 export async function generateStaticParams() {
   const posts = await getAllSlugs();
@@ -22,7 +24,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
+  const { slug } = params;
   const post = await getPostBySlug(slug);
   if (!post) return { title: "記事が見つかりません" };
 
@@ -34,7 +36,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: post.title,
       description,
-      url: `https://example.com/blog/${post.slug}`,
+      url: `${siteMeta.siteUrl}/blog/${post.slug}`,
       images: [
         {
           url: post.eyecatch?.url || "/images/default-ogp.jpg",
@@ -54,7 +56,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function BlogPost({ params }) {
-  const { slug } = await params;
+  const { slug } = params;
   const post = await getPostBySlug(slug);
 
   if (!post) notFound();
@@ -86,8 +88,9 @@ export default async function BlogPost({ params }) {
               alt={title}
               fill
               priority
-              placeholder={eyecatch?.blurDataURL ? "blur" : "empty"}
+              placeholder={eyecatch?.blurDataURL ? "blur" : undefined}
               blurDataURL={eyecatch?.blurDataURL}
+              style={{ objectFit: "cover" }}
             />
           </div>
         </figure>

@@ -1,10 +1,7 @@
 // components/hero.js
-// import { useState, useEffect } from "react";
 import styles from "styles/hero.module.css";
 import Image from "next/image";
 import cube from "public/images/cube.jpg";
-
-// import ImageOn from "./ImageOn"; // 画像コンポーネントのインポート　← 追加（例: 3行目）
 
 export default function Hero({ title, subtitle, imageOn = false }) {
   return (
@@ -15,12 +12,12 @@ export default function Hero({ title, subtitle, imageOn = false }) {
       </div>
       {imageOn && (
         <figure className={styles.image}>
-          {/* <ImageOn />{" "} */}
           <Image
             src={cube}
-            alt="CUBEのイメージ"
+            alt="CUBEのイメージ画像"
             placeholder="blur"
-            layout="responsive"
+            width={576}
+            height={324}
             sizes="(min-width: 1152px) 576px, (min-width: 768px) 50vw, 100vw"
             priority
           />

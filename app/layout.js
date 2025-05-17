@@ -15,7 +15,7 @@ export const metadata = {
     siteName: siteMeta.siteTitle,
     images: [
       {
-        url: `${siteMeta.siteUrl}/images/ogp.jpg`,
+        url: `${siteMeta.siteUrl}/images/default-ogp.jpg`, // ← 修正点
         width: 1200,
         height: 630,
       },
@@ -25,7 +25,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang={siteMeta.siteLang}>
+    <html lang={siteMeta.siteLang || "ja"}>
       <body>
         <Analytics />
         <Header />

@@ -17,7 +17,7 @@ export const metadata = {
     siteName: siteMeta.siteTitle,
     images: [
       {
-        url: `${siteMeta.siteUrl}/images/ogp.jpg`,
+        url: `${siteMeta.siteUrl}/images/default-ogp.jpg`,
         width: 1200,
         height: 630,
       },
@@ -27,7 +27,6 @@ export const metadata = {
 
 export default async function Blog() {
   const posts = await getAllPosts();
-  console.log(posts);
 
   return (
     <Container>

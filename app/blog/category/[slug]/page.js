@@ -1,14 +1,13 @@
 // app/blog/category/[slug]/page.js
 
-import { getAllCategories, getPostsByCategorySlug } from "@/lib/api"; // ★ import修正
-import { notFound } from "next/navigation"; // ★ 追加
+import { getAllCategories, getPostsByCategorySlug } from "@/lib/api";
+import { notFound } from "next/navigation";
 import Container from "@/components/container";
 import PostHeader from "@/components/post-header";
 import Posts from "@/components/posts";
 import { eyecatchLocal } from "@/lib/constants";
-import Meta from "@/components/meta";
 import CategoryViewTracker from "@/components/CategoryViewTracker";
-// import styles from "@/styles/category.module.css";
+import { siteMeta } from "@/lib/constants";
 
 export async function generateStaticParams() {
   const categories = await getAllCategories();
@@ -16,7 +15,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const { slug } = params; // ★ await不要
+  const { slug } = params;
   const categories = await getAllCategories();
   const category = categories.find((cat) => cat.slug === slug);
 
@@ -26,28 +25,42 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${category.name}の記事一覧`,
-    description: `${category.name}に関する記事の一覧ページです。`, // ★ discription -> description
+    description: `${category.name}に関する記事の一覧ページです。`,
+    openGraph: {
+      title: `${category.name}の記事一覧`,
+      description: `${category.name}に関する記事の一覧ページです。`,
+      url: `${siteMeta.siteUrl}/blog/category/${slug}`,
+      images: [
+        {
+          url: eyecatchLocal.url,
+          width: eyecatchLocal.width,
+          height: eyecatchLocal.height,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${category.name}の記事一覧`,
+      description: `${category.name}に関する記事の一覧ページです。`,
+      images: [eyecatchLocal.url],
+    },
   };
 }
 
 export default async function CategoryPage({ params }) {
-  const { slug } = params; // ★ await不要
+  const { slug } = params;
   const categories = await getAllCategories();
   const category = categories.find((cat) => cat.slug === slug);
 
-  if (!category) {
-    notFound();
-  }
+  if (!category) notFound();
 
-  let posts = await getPostsByCategorySlug(category.id); // ★ 関数名修正
+  let posts = await getPostsByCategorySlug(category.id);
 
-  // アイキャッチがない記事にはローカルアイキャッチをセット
   posts = await Promise.all(
     posts.map(async (post) => {
       if (!post.eyecatch) {
         post.eyecatch = {
           ...eyecatchLocal,
-          blurDataURL: "", // ローカル画像だからblur生成はここではしない
         };
       }
       return post;
@@ -57,14 +70,6 @@ export default async function CategoryPage({ params }) {
   return (
     <Container>
       <CategoryViewTracker categoryName={category.name} />
-      <Meta
-        pageTitle={`${category.name}の記事一覧`}
-        pageDesc={`${category.name}に関する記事の一覧ページです。`}
-        pageImg={eyecatchLocal.url}
-        pageImgW={eyecatchLocal.width}
-        pageImgH={eyecatchLocal.height}
-        pageUrl={`${process.env.NEXT_PUBLIC_SITE_URL}/blog/category/${slug}`}
-      />
       <PostHeader title={category.name} subtitle="Blog Category" />
       <Posts posts={posts} />
     </Container>

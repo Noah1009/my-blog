@@ -11,12 +11,10 @@ import {
 } from "@components/two-column";
 import Accordion from "@/components/accordion";
 import Image from "next/image";
-// import eyecatch from "public/images/about.jpg";
-// import Meta from "@components/meta";
 import { siteMeta } from "@/lib/constants";
 
 export const metadata = {
-  title: "アバウト | ${siteMeta.siteTitle}",
+  title: `アバウト | ${siteMeta.siteTitle}`,
   description: "About development activities",
   openGraph: {
     title: `アバウト | ${siteMeta.siteTitle}`,
@@ -36,7 +34,6 @@ export const metadata = {
 export default function About() {
   return (
     <Container>
-      {/* <Meta pageTitle="アバウト" pageDesc="About development activities" /> */}
       <Hero title="About" subtitle="About developments activities" />
 
       <figure
@@ -49,7 +46,6 @@ export default function About() {
           sizes="(min-width: 1152px) 1152px,100vw"
           priority
           style={{ objectFit: "cover" }}
-          // placeholder="blur"
         />
       </figure>
 
