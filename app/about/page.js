@@ -1,6 +1,5 @@
 // app/about/page.js
 
-import Meta from "@components/meta";
 import Container from "@components/container";
 import Hero from "@components/hero";
 import PostBody from "@components/post-body";
@@ -10,13 +9,34 @@ import {
   TwoColumnMain,
   TwoColumnSidebar,
 } from "@components/two-column";
+import Accordion from "@/components/accordion";
 import Image from "next/image";
 // import eyecatch from "public/images/about.jpg";
+// import Meta from "@components/meta";
+import { siteMeta } from "@/lib/constants";
+
+export const metadata = {
+  title: "アバウト | ${siteMeta.siteTitle}",
+  description: "About development activities",
+  openGraph: {
+    title: `アバウト | ${siteMeta.siteTitle}`,
+    description: "About development activities",
+    url: `${siteMeta.siteUrl}/about`,
+    siteName: siteMeta.siteTitle,
+    images: [
+      {
+        url: `${siteMeta.siteUrl}/images/about.jpg`,
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
+};
 
 export default function About() {
   return (
     <Container>
-      <Meta pageTitle="アバウト" pageDesc="About development activities" />
+      {/* <Meta pageTitle="アバウト" pageDesc="About development activities" /> */}
       <Hero title="About" subtitle="About developments activities" />
 
       <figure
@@ -50,6 +70,23 @@ export default function About() {
             <p>
               今までと違うものを作ることで愛着が湧いていきます。そこで興味を持ったことは小さなことでもいいから取り入れて、良いものを作れるようにしています。小さなヒントから新しいものを生み出すようなモノづくりは、これからも続けていきたいです。
             </p>
+            <h2>FAQ</h2>
+            <Accordion heading="プログラミングのポイントについて">
+              <p>
+                プログラミングのポイントは、作りたいものを作ることです。楽しいことから思いつき、目標とゴールを決め、そこに向かってさまざまな課題を設定していきながら、プログラムを作っていきます。
+              </p>
+            </Accordion>
+            <Accordion heading="古代語の解読について">
+              <p>
+                古代語を解読するのに必要なのは、書かれた文字そのものだけです。古代の世界観や思考方法。
+                それらを読み取ってこそ古代の世界感が理解できます。
+              </p>
+            </Accordion>
+            <Accordion heading="公開リポジトリの活用について">
+              <p>
+                公開リポジトリを活用すると、全世界のどこからでもアクセスし、開発者が関連するプロジェクトのタスクをを利用することができます。
+              </p>
+            </Accordion>
           </PostBody>
         </TwoColumnMain>
 

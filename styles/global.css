@@ -1,4 +1,12 @@
 /* styles/global.css */
+/* ========================================
+   Google Fonts（Inter）
+   ======================================== */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap");
+
+/* ========================================
+      変数定義（カラー・タイポグラフィ・スペーシング）
+      ======================================== */
 :root {
   /* カラー（色） */
   --white: #ffffff;
@@ -11,7 +19,7 @@
 
   /* タイポグラフィ（フォントサイズ） */
   --body: clamp(1rem, 0.95rem + 0.2vw, 1.125rem); /* 16-18px */
-  --display: clamp(4.5rem, 1.83rem + 11.34vw, 10rem); /* 72-160 */
+  --display: clamp(4.5rem, 1.83rem + 11.34vw, 10rem); /* 72-160px */
   --heading1: clamp(2rem, 1.3rem + 3vw, 4rem); /* 32-64px */
   --heading2: calc(var(--body) * 1.5); /* 24-27px */
   --heading3: calc(var(--body) * 1.2); /* 19.2-21.6px */
@@ -25,57 +33,70 @@
   --space-lg: calc(var(--space-xs) * 3); /* 60-90px */
   --space-xl: calc(var(--space-xs) * 4); /* 80-120px */
   --space-jump: clamp(1.25rem, 0.35rem + 3.8vw, 3.75rem); /* 20-60px */
-
-  /* 基本設定 */
-  body {
-    color: var(--black);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
-      sans-serif;
-    font-size: var(--body);
-  }
-
-  h1 {
-    font-size: var(--heading1);
-  }
-
-  h2 {
-    font-size: var(--heading2);
-  }
-
-  h3 {
-    font-size: var(--heading3);
-  }
-
-  /* next/image */
-  span > image {
-    transition: 0.2s;
-  }
-
-  /*  リセット  */
-  body,
-  h1,
-  h2,
-  h3,
-  p,
-  figure,
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
 }
 
+/* ========================================
+      基本設定
+      ======================================== */
 body {
+  color: var(--black);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+    Arial, sans-serif;
+  font-size: var(--body);
   padding: 2rem !important;
+  background-color: var(--white);
+  line-height: 1.6;
+}
+
+/* 見出しスタイル */
+h1 {
+  font-size: var(--heading1);
+}
+h2 {
+  font-size: var(--heading2);
+}
+h3 {
+  font-size: var(--heading3);
+}
+
+/* ========================================
+      next/image 対応
+      ======================================== */
+/* クラス指定で制御する例 */
+img {
+  transition: 0.2s ease-in-out;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* カスタムクラスで個別対応したい場合 */
+.fade-img {
+  transition: 0.2s ease-in-out;
+}
+
+/* ========================================
+      リセットCSS（基本）
+      ======================================== */
+body,
+h1,
+h2,
+h3,
+p,
+figure,
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }

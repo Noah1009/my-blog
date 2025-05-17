@@ -1,0 +1,14 @@
+/* styles/category.module.css */
+
+/* .heading {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+} */
+
+.noPosts {
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 4rem;
+  color: #666;
+}

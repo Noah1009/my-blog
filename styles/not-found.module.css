@@ -1,0 +1,24 @@
+/* styles/not-found.module.css */
+
+.wrapper {
+  text-align: center;
+}
+
+.message {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #444;
+  font-size: 1rem;
+}
+
+.button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background-color: #0d87e0;
+  color: #fff;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+  cursor: pointer;
+}

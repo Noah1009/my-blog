@@ -1,21 +1,123 @@
 /* styles/nav.module.css */
+
+/* 共通 */
+.nav {
+  position: relative;
+}
+
+/* メニューリスト共通 */
 .list {
   display: flex;
   gap: 2em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-/* PC向けのhoverスタイル */
-.list a:hover {
-  color: var(--accent);
-}
-
-/* モバイル向けに;hover スタイルを無効にする */
-@media (hover: none) {
-  .list a {
-    -webkit-tap-highlight-color: transparent;
+/* デスクトップ */
+@media (min-width: 768px) {
+  .btn {
+    display: none;
   }
-  /* タップ時のスタイルはactiveで指定 */
-  .list a:active {
+}
+
+/* モバイル */
+@media (max-width: 767px) {
+  /* ハンバーガーボタン */
+  .btn {
+    all: unset;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 42px;
+    height: 42px;
+    z-index: 200;
+
+    /* ★ 追記: 絶対配置に変更して右上に固定 */
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* バー1本ずつのスタイル */
+  .bar {
+    display: block;
+    width: 32px;
+    height: 2px;
+    background-color: currentColor;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+
+    /* ★ 追記: 回転の中心を中央にすることで自然な動きに */
+    transform-origin: center;
+  }
+
+  /* 通常状態（開いていない時） */
+  .btn .bar:nth-child(1),
+  .btn .bar:nth-child(2),
+  .btn .bar:nth-child(3) {
+    transform: none;
+    opacity: 1;
+  }
+
+  /* ★ ハンバーガーを "×" に変形（開いている時） */
+  .open .bar:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .open .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .open .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  /* メニューオーバーレイ */
+  .list {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* ★ 初期状態は右に隠す */
+    transform: translateX(100%);
+    transition: transform 0.4s ease;
+    z-index: 100;
+  }
+
+  /* メニュー開いたときの表示 */
+  .open .list {
+    transform: translateX(0);
+  }
+
+  /* メニュー項目 */
+  .list li {
+    margin: 20px 0;
+  }
+
+  .list a:hover {
     color: var(--accent);
+  }
+
+  /* タップ時の挙動を最適化（モバイル向け） */
+  @media (hover: none) {
+    .list a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .list a:active {
+      color: var(--accent);
+    }
   }
 }

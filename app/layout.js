@@ -1,39 +1,35 @@
-// app/layout.js (ルートレイアウト)
-// export default function RootLayout({ children }) {
-//   return (
-//     <html lang="ja">
-//       <body>{children}</body>
-//     </html>
-//   );
-// }
-
 // app/layout.js
-
-import "styles/global.css";
-// import "styles/layout.module.css";
+import "@/styles/global.css";
+import Analytics from "@/components/Analytics";
 import Header from "@components/header";
 import Footer from "@components/footer";
-import Meta from "@components/meta";
-// Font Awesomeの設定
-// import "@fortawesome/fontawesome-svg-core/styles.css";
-// import { config } from "@fortawesome/fontawesome-svg-core";
-// config.autoAddCss = false;
-// import { IconHome } from "@components/icon";
+import { siteMeta } from "@/lib/constants";
+
+export const metadata = {
+  title: siteMeta.siteTitle,
+  description: siteMeta.siteDesc,
+  openGraph: {
+    title: siteMeta.siteTitle,
+    description: siteMeta.siteDesc,
+    url: siteMeta.siteUrl,
+    siteName: siteMeta.siteTitle,
+    images: [
+      {
+        url: `${siteMeta.siteUrl}/images/ogp.jpg`,
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
+};
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ja">
-      <head>
-        <Meta />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang={siteMeta.siteLang}>
       <body>
+        <Analytics />
         <Header />
-        {/* <IconHome /> */}
-        {children}
+        <main>{children}</main>
         <Footer />
       </body>
     </html>

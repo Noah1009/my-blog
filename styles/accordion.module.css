@@ -1,0 +1,67 @@
+/* styles/accordion.module.css */
+.open,
+.close {
+  border: solid 1px var(--gray-25);
+}
+
+/* 見出し*/
+.heading {
+  font-size: var(--body);
+}
+
+.heading button {
+  all: unset;
+  outline: revert;
+  cursor: pointer;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1em;
+  box-sizing: border-box;
+}
+
+/* 見出しのアイコン */
+.icon {
+  color: var(--gray-25);
+  font-size: 1.25em;
+  transition: transform 0.4s ease;
+}
+
+.open .icon {
+  transform: rotate(180deg);
+}
+
+/* テキスト */
+.text {
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+/* 中身 */
+.textInner {
+  padding: 0 1.14em 1.14em;
+  font-size: calc(var(--body) * 0.875);
+}
+
+.card {
+  display: block;
+  padding: 1rem;
+  background: #f8f8f8;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.card:hover {
+  background: #e0f0ff;
+}
+
+.category-name {
+  font-weight: bold;
+}
+
+.category-count {
+  display: block;
+  font-size: 0.85rem;
+  color: #555;
+}

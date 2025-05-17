@@ -1,31 +1,25 @@
 // app/page.js
-"use client";
+import { getLatestPosts } from "@/lib/api";
+import Meta from "@/components/meta";
+import Container from "@/components/container";
+import Hero from "@/components/hero";
+import Posts from "@/components/posts";
+import Pagination from "@/components/pagination";
+import { siteMeta } from "@/lib/constants";
 
-import { useState, useEffect } from "react";
-import Meta from "@components/meta";
-import Container from "@components/container";
-import Hero from "@components/hero"; // エイリアス設定に合わせる
-import PageLayout from "@components/PageLayout"; // 共通レイアウトを使う場合
-// import ImageOn from "@components/ImageOn";
-
-export default function Home() {
-  // imageOnを定着
-  const [imageOn, setImageOn] = useState(false);
-
-  // コンポーネントがマウントされたら　true　にする
-  useEffect(() => {
-    setImageOn(true);
-  }, []);
+export default async function Home() {
+  const posts = await getLatestPosts(4);
 
   return (
     <Container>
-      <Meta />
+      <Meta pageUrl={`${siteMeta.siteUrl}/`} />
       <Hero
         title="CUBE"
         subtitle="アウトプットしていくサイト"
-        imageOn={imageOn} //imageOn　を　props　に渡す
+        imageOn={true} // 必要に応じて true または false を固定値で渡す
       />
-      {/* ホームページ固有の内容 */}
+      <Posts posts={posts} />
+      <Pagination nextUrl="/blog" nextText="More Posts" />
     </Container>
   );
 }

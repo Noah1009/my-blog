@@ -1,5 +1,5 @@
 // app/blog/[slug]/page.js
-import { getPostBySlug, getAllSlugs } from "@/lib/api";
+import { getPostBySlug, getAllSlugs, getAllPosts } from "@/lib/api";
 import { getPrevNextPosts } from "@/lib/prev-next-post";
 import { extractText } from "@/lib/extract-text";
 import { notFound } from "next/navigation";
@@ -16,24 +16,15 @@ import {
 import PostCategories from "@/components/post-categories";
 import Image from "next/image";
 
-//静的パス生成
 export async function generateStaticParams() {
   const posts = await getAllSlugs();
   return posts.map(({ slug }) => ({ slug }));
 }
 
-// メタデータの動的生成
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
-
-  // console.log("アイキャッチ:", post.eyecatch); // ログの確認用
-
-  if (!post) {
-    return {
-      title: "記事が見つかりません",
-    };
-  }
+  if (!post) return { title: "記事が見つかりません" };
 
   const description = extractText(post.content, 100, "…続きを読む");
 
@@ -62,7 +53,6 @@ export async function generateMetadata({ params }) {
   };
 }
 
-//　ページコンポーネント
 export default async function BlogPost({ params }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
@@ -71,7 +61,7 @@ export default async function BlogPost({ params }) {
 
   const { title, publishDate, eyecatch, categories, content } = post;
 
-  const allPosts = await getAllSlugs();
+  const allPosts = await getAllPosts();
   const { prevPost, nextPost } = getPrevNextPosts(allPosts, slug);
 
   return (
@@ -83,7 +73,6 @@ export default async function BlogPost({ params }) {
           publish={publishDate}
         />
 
-        {/*  アイキャッチ画像  */}
         <figure>
           <div
             style={{
@@ -97,11 +86,12 @@ export default async function BlogPost({ params }) {
               alt={title}
               fill
               priority
+              placeholder={eyecatch?.blurDataURL ? "blur" : "empty"}
+              blurDataURL={eyecatch?.blurDataURL}
             />
           </div>
         </figure>
 
-        {/* 本文とサイドバー */}
         <TwoColumn>
           <TwoColumnMain>
             <PostBody>
@@ -114,26 +104,6 @@ export default async function BlogPost({ params }) {
           </TwoColumnSidebar>
         </TwoColumn>
 
-        {/* 前後記事へのリンク */}
-        {/* <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "2rem",
-          }}
-        >
-          {prevPost ? (
-            <Link href={`/blog/${prevPost.slug}`}>&larr; {prevPost.title}</Link>
-          ) : (
-            <div />
-          )}
-
-          {nextPost ? (
-            <Link href={`/blog/${nextPost.slug}`}>{nextPost.title} &rarr;</Link>
-          ) : (
-            <div />
-          )}
-        </div> */}
         <Pagination
           prevText={prevPost?.title}
           prevUrl={prevPost ? `/blog/${prevPost.slug}` : ""}
