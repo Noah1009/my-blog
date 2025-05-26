@@ -1,0 +1,42 @@
+// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "esnext", // ← ✅ 最新のJS構文に対応
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@components/*": ["components/*"],
+      "@lib/*": ["lib/*"],
+      "@styles/*": ["styles/*"],
+      "@types/*": ["types/*"]
+    },
+    "typeRoots": ["types", "node_modules/@types"], // ← ✅ types/ を手動登録
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "global.d.ts",
+    "types" // ← ✅ 独自型定義フォルダの補完を確実に
+  ],
+  "exclude": ["node_modules"]
+}

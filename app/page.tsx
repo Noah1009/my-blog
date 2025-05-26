@@ -1,11 +1,13 @@
-// app/page.js
-import { getLatestPosts } from "@/lib/api";
-import Meta from "@/components/meta";
-import Container from "@/components/container";
-import Hero from "@/components/hero";
-import Posts from "@/components/posts";
-import Pagination from "@/components/pagination";
-import { siteMeta } from "@/lib/constants";
+// app/page.tsx
+
+import { getLatestPosts } from '@/lib/api'
+import Meta from '@/components/meta'
+import Container from '@/components/container'
+import Hero from '@/components/hero'
+import Posts from '@/components/posts'
+import Pagination from '@/components/pagination'
+import { siteMeta } from '@/lib/constants'
+import type { Post } from '@/lib/types'
 
 export const metadata = {
   title: siteMeta.siteTitle,
@@ -23,10 +25,10 @@ export const metadata = {
       },
     ],
   },
-};
+}
 
-export default async function Home() {
-  const posts = await getLatestPosts(4);
+export default async function Home(): Promise<JSX.Element> {
+  const posts: Post[] = await getLatestPosts(4)
 
   return (
     <Container>
@@ -42,5 +44,5 @@ export default async function Home() {
       <Posts posts={posts} />
       <Pagination nextUrl="/blog" nextText="More Posts" />
     </Container>
-  );
+  )
 }
