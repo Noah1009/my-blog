@@ -36,7 +36,8 @@
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "global.d.ts",
-    "types" // ← ✅ 独自型定義フォルダの補完を確実に
+    "types", // ← ✅ 独自型定義フォルダの補完を確実に
+    "next-sitemap.config.js"
   ],
   "exclude": ["node_modules"]
 }

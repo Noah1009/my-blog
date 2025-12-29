@@ -1,19 +1,36 @@
 /* styles/logo.module.css */
+
 .basic {
-  font-size: var(--heading2);
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  display: inline-block;
+  text-decoration: none;
 }
 
 .box {
   composes: basic;
-  display: inline-block;
-  padding: 1em 2em;
-  background-color: var(--gray-75);
-  color: var(--white);
-  font-size: var(--small-heading2);
+  padding: 0em 1em;
+  /* background-color: var(--gray-75); */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
-a.box {
-  color: var(--white);
+/* 画像を包むラッパー */
+.logoWrapper {
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+@media (min-width: 768px) {
+  .logoWrapper {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* next/image に fill させる */
+.logoImage {
+  object-fit: contain;
+  width: 100%;
+  height: auto;
 }

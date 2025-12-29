@@ -1,7 +1,7 @@
 // components/CategoryLink.tsx
 
 'use client'
-
+import type { JSX } from 'react'
 import Link from 'next/link'
 import { event } from '@/lib/gtag'
 

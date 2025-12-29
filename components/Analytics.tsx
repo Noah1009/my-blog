@@ -1,7 +1,7 @@
 // components/Analytics.tsx
 
 'use client'
-
+import type { JSX } from 'react'
 import Script from 'next/script'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'

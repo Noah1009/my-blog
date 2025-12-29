@@ -1,9 +1,45 @@
 /* styles/contact.module.css */
-.stack > * + * {
-  margin-top: var(--stack-space, 1em);
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
 }
 
-.heading {
-  font-size: var(--body);
-  margin-bottom: 2rem !important;
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.form input,
+.form textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form button {
+  align-self: flex-start;
+  padding: 8px 16px;
+  background-color: gold;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  color: white;
+}
+
+.form button:hover {
+  background-color: darkgoldenrod;
 }

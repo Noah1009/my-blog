@@ -1,0 +1,25 @@
+/* styles/profile.module.css */
+.profileRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.bio {
+  font-size: 0.8rem;
+  text-align: left;
+  margin: 0.5rem 0 0 rem;
+  line-height: 1.4;
+  color: var(--black); 
+  flex: 1 1 40%;
+  min-width: 120px;
+}
+
+.avatarCircle {
+  flex: 0 0 auto;
+  min-width: 60px;
+}

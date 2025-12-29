@@ -1,83 +1,13 @@
 /* styles/global.css */
 /* ========================================
-   Google Fonts（Inter）
-   ======================================== */
+         Google Fonts（Inter） & Open Props
+         ======================================== */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap");
+@import url("https://unpkg.com/open-props/easings.min.css");
 
 /* ========================================
-      変数定義（カラー・タイポグラフィ・スペーシング）
-      ======================================== */
-:root {
-  /* カラー（色） */
-  --white: #ffffff;
-  --gray-10: #eeeeee;
-  --gray-25: #aaaaaa;
-  --gray-50: #707070;
-  --gray-75: #444444;
-  --black: #222222;
-  --accent: #0d87e0;
-
-  /* タイポグラフィ（フォントサイズ） */
-  --body: clamp(1rem, 0.95rem + 0.2vw, 1.125rem); /* 16-18px */
-  --display: clamp(4.5rem, 1.83rem + 11.34vw, 10rem); /* 72-160px */
-  --heading1: clamp(2rem, 1.3rem + 3vw, 4rem); /* 32-64px */
-  --heading2: calc(var(--body) * 1.5); /* 24-27px */
-  --heading3: calc(var(--body) * 1.2); /* 19.2-21.6px */
-  --small-heading2: clamp(0.875rem, 4vw - 1rem, 1.6875rem); /* 14-27px */
-  --small-heading3: calc(var(--small-heading2) * 0.86); /* 12-23px */
-
-  /* スペース（余白・間隔） */
-  --space-xs: clamp(1.25rem, 1rem + 0.98vw, 1.875rem); /* 20-30px */
-  --space-sm: calc(var(--space-xs) * 1.5); /* 30-45px */
-  --space-md: calc(var(--space-xs) * 2); /* 40-60px */
-  --space-lg: calc(var(--space-xs) * 3); /* 60-90px */
-  --space-xl: calc(var(--space-xs) * 4); /* 80-120px */
-  --space-jump: clamp(1.25rem, 0.35rem + 3.8vw, 3.75rem); /* 20-60px */
-}
-
-/* ========================================
-      基本設定
-      ======================================== */
-body {
-  color: var(--black);
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
-    Arial, sans-serif;
-  font-size: var(--body);
-  padding: 2rem !important;
-  background-color: var(--white);
-  line-height: 1.6;
-}
-
-/* 見出しスタイル */
-h1 {
-  font-size: var(--heading1);
-}
-h2 {
-  font-size: var(--heading2);
-}
-h3 {
-  font-size: var(--heading3);
-}
-
-/* ========================================
-      next/image 対応
-      ======================================== */
-/* クラス指定で制御する例 */
-img {
-  transition: 0.2s ease-in-out;
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* カスタムクラスで個別対応したい場合 */
-.fade-img {
-  transition: 0.2s ease-in-out;
-}
-
-/* ========================================
-      リセットCSS（基本）
-      ======================================== */
+                  リセット CSS
+                  ======================================== */
 body,
 h1,
 h2,
@@ -99,4 +29,145 @@ ul {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* ========================================
+            カスタムプロパティ（ライトモード）
+            ======================================== */
+:root {
+  /* 基本カラー */
+  --white: #ffffff;
+  --gray-10: #eeeeee;
+  --gray-25: #aaaaaa;
+  --gray-50: #707070;
+  --gray-75: #444444;
+  --black: #222222;
+  --accent: #0d87e0;
+
+  /* ★UI用セマンティック変数（重要） */
+  --text: var(--black);
+  --muted-text: var(--gray-50);
+  --card-bg: var(--white);
+  --card-border: rgba(0, 0, 0, 0.05);
+
+  /* タイポグラフィ */
+  --body: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  --display: clamp(4.5rem, 1.83rem + 11.34vw, 10rem);
+  --heading1: clamp(2rem, 1.3rem + 3vw, 4rem);
+  --heading2: calc(var(--body) * 1.5);
+  --heading3: calc(var(--body) * 1.2);
+  --small-heading2: clamp(0.875rem, 4vw - 1rem, 1.6875rem);
+  --small-heading3: calc(var(--small-heading2) * 0.86);
+
+  /* スペーシング */
+  --space-xs: clamp(1.25rem, 1rem + 0.98vw, 1.875rem);
+  --space-sm: calc(var(--space-xs) * 1.5);
+  --space-md: calc(var(--space-xs) * 2);
+  --space-lg: calc(var(--space-xs) * 3);
+  --space-xl: calc(var(--space-xs) * 4);
+  --space-jump: clamp(1.25rem, 0.35rem + 3.8vw, 3.75rem);
+}
+
+/* ========================================
+                     ベーススタイル
+                     ======================================== */
+body {
+  color: var(--text);
+  font-family:
+    var(--font-notojp),
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Helvetica,
+    Arial,
+    sans-serif;
+  font-size: var(--body);
+  background-color: var(--white);
+  line-height: 1.7;
+  padding: 0.5rem 0 !important;
+  margin: 1rem;
+}
+
+/* 「雫の記憶」タイトル部分 */
+h1 {
+  font-family: var(--font-zen-antique-soft), var(--font-noto-serif-jp), serif;
+  font-size: var(--heading1);
+}
+
+/* セクション見出し */
+h2,
+h3 {
+  font-family: var(--font-noto-serif-jp), var(--font-notojp), serif;
+}
+
+p {
+  font-family:
+    var(--font-opensans), var(--font-notojp), "Hiragino Kaku Gothic ProN",
+    "Meiryo", sans-serif;
+}
+
+/* ========================================
+                     next/image 対応
+                     ======================================== */
+img {
+  transition: 0.2s ease-in-out;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.fade-img {
+  transition: 0.2s ease-in-out;
+}
+
+/* ========================================
+                     ダークモード
+                     ======================================== */
+:root.dark,
+html.dark,
+body.dark {
+  --white: #111111;
+  --gray-10: #2a2a2a;
+  --gray-25: #555555;
+  --gray-50: #bbbbbb;
+  --gray-75: #dddddd;
+  --black: #f9f9f9;
+  --accent: #56aaff;
+
+  /* ★ダーク用UI変数 */
+  --text: #f9f9f9;
+  --muted-text: #bbbbbb;
+  --card-bg: #161616;
+  --card-border: rgba(255, 255, 255, 0.12);
+
+  background-color: var(--white);
+  color: var(--text);
+}
+
+/* ヘッダー背景切り替え（既存） */
+[data-theme="dark"] {
+  --header-bg-color: #111;
+}
+
+[data-theme="light"] {
+  --header-bg-color: #fff;
+}
+
+/* ヘッダーの高さ分だけコンテンツを下げる */
+main {
+  padding-top: 60px;
+}
+
+/* スムーズなテーマ切り替え */
+html,
+body,
+html.theme-transition {
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+}
+
+body.theme-fade {
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }

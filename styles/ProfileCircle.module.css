@@ -1,0 +1,45 @@
+/* styles/ProfileCircle.module.css */
+
+.profileCircleWrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.profileImage {
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.textCircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px; /* 小さめサークル */
+  height: 100px;
+  transform: translate(-50%, -50%);
+  animation: spin 20s linear infinite;
+}
+
+/* ✅ CSS Modules の pure selector 制約回避：
+   ローカルクラス（.textCircle）を含めた上で global を指定する */
+.textCircle :global(text) {
+  font-size: 20px; /* 必要に応じて小さめに */
+  fill: currentColor;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

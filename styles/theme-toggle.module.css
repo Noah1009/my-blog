@@ -1,0 +1,89 @@
+/* styles/theme-toggle.module.css */
+.themeToggle {
+  --size: 2rem;
+  --icon-fill: currentColor;
+  --icon-fill-hover: #666;
+
+  inline-size: var(--size);
+  block-size: var(--size);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 5px;
+  -webkit-tap-highlight-color: transparent;
+
+  @media (hover: none) {
+    --size: 48px;
+  }
+}
+
+.themeToggle > svg {
+  inline-size: 70%;
+  block-size: 70%;
+  stroke-linecap: round;
+}
+
+.sunAndMoon > :is(.moon, .sun, .sunBeams) {
+  transform-origin: center center;
+}
+
+.sun {
+  fill: var(--icon-fill);
+  transition: transform 0.5s var(--ease-elastic-3);
+}
+
+.sunBeams {
+  stroke: var(--icon-fill);
+  stroke-width: 2px;
+  opacity: 1;
+  transition:
+    transform 0.5s var(--ease-elastic-4),
+    opacity 0.5s var(--ease-3);
+}
+
+.moon > circle {
+  transform: translateX(-7px);
+  transition: transform 0.25s var(--ease-out-5);
+}
+
+@supports (cx: 1px) {
+  .moon > circle {
+    transform: translateX(0);
+    cx: 17px;
+    transition: cx 0.25s var(--ease-out-5);
+  }
+}
+
+.themeToggle:is(:hover, :focus-visible) .sun,
+.themeToggle:is(:hover, :focus-visible) .moon > circle {
+  fill: var(--icon-fill-hover);
+}
+
+.themeToggle:is(:hover, :focus-visible) .sunBeams {
+  stroke: var(--icon-fill-hover);
+}
+
+/* ダークテーマでの変化 */
+[data-theme="dark"] .sun {
+  transform: scale(1.75);
+  transition: transform 0.25s var(--ease-3);
+}
+
+[data-theme="dark"] .sunBeams {
+  opacity: 0;
+  transform: rotateZ(-25deg);
+  transition-duration: 0.15s;
+}
+
+[data-theme="dark"] .moon > circle {
+  transition-delay: 0.25s;
+  transition-duration: 0.5s;
+}
+
+/* ダークモードでは、アイコンの currentColor を明るくする */
+[data-theme="dark"] .themeToggle {
+  color: #ffffff;
+}

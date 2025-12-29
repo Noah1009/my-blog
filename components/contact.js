@@ -1,4 +1,5 @@
-// components/contact.js
+// components/contact.tsx
+
 import Social from "@components/social";
 import styles from "styles/contact.module.css";
 

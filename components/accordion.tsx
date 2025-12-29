@@ -1,7 +1,7 @@
 // components/accordion.tsx
 
 'use client'
-
+import type { JSX } from 'react'
 import { useState, useRef, useEffect, type ReactNode } from 'react'
 import styles from '@/styles/accordion.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

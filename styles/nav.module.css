@@ -29,15 +29,15 @@
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
     width: 42px;
-    height: 42px;
+    height: auto;
     z-index: 200;
 
     /* ★ 追記: 絶対配置に変更して右上に固定 */
-    position: absolute;
+    /* position: absolute;
     top: 1rem;
-    right: 1rem;
+    right: 1rem; */
 
     justify-content: center;
     align-items: center;
@@ -49,10 +49,13 @@
     width: 32px;
     height: 2px;
     background-color: currentColor;
-    transition: transform 0.4s ease, opacity 0.4s ease;
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease;
 
     /* ★ 追記: 回転の中心を中央にすることで自然な動きに */
     transform-origin: center;
+    margin-bottom: 0rem;
   }
 
   /* 通常状態（開いていない時） */
@@ -74,6 +77,24 @@
 
   .open .bar:nth-child(3) {
     transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  .bar:last-child {
+    margin-bottom: 0; /* 最後のバーとMENUの間を詰める */
+    padding: 0;
+  }
+
+  /* MENU ラベルのスタイル追加 */
+  .menu {
+    font-size: 0.6rem;
+    color: currentColor;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    margin-top: 0rem;
+  }
+
+  .btn .menu {
+    text-align: center;
   }
 
   /* メニューオーバーレイ */

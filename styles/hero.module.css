@@ -1,31 +1,235 @@
 /* styles/hero.module.css */
-.flexContainer {
-  composes: sideBySideCenter from "styles/utils.module.css";
+
+/* ===========================
+   Hero 全体
+   =========================== */
+
+.heroWrapper {
   width: 100%;
+  padding: clamp(48px, 6vw, 88px) clamp(16px, 4vw, 40px);
+
+  /* ライト / ダークどちらでも成立する背景 */
+  background:
+    radial-gradient(
+      circle at 12% 20%,
+      rgba(13, 135, 224, 0.06) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(190, 46, 221, 0.04) 0%,
+      transparent 60%
+    );
 }
+
+.flexContainer {
+  max-width: 1120px;
+  margin: 0 auto;
+
+  display: flex;
+  gap: clamp(28px, 4vw, 64px);
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* ===========================
+     テキストエリア
+     =========================== */
 
 .text {
-  padding-top: calc(var(--display) * 0.5);
-  padding-bottom: calc(var(--display) * 0.7);
+  flex: 1;
+  min-width: 320px;
+
+  padding-top: clamp(6px, 1.8vw, 22px);
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.title {
-  font-size: var(--display);
-  font-weight: 900;
-  letter-spacing: 0.15em;
+/* 虹色タイトル */
+.titleRainbow {
+  font-size: clamp(2.2rem, 4.6vw, 4.6rem);
+
+  background: linear-gradient(
+    90deg,
+    #ff6b6b,
+    #f9ca24,
+    #6ab04c,
+    #22a6b3,
+    #be2edd,
+    #ff6b6b
+  );
+  background-size: 360% 360%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  animation: rainbowShift 10s ease-in-out infinite;
+}
+
+@keyframes rainbowShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* タイトル質感 */
+.heroTitle {
+  letter-spacing: 0.06em;
+  line-height: 1.12;
+  font-weight: 400;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  text-shadow:
+    0px 2px 10px rgba(255, 255, 255, 0.22),
+    0px 0px 26px rgba(255, 255, 255, 0.28);
 }
 
 .subtitle {
-  font-size: var(--small-heading2);
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  line-height: 1.9;
+  max-width: 44ch;
+  white-space: pre-line;
+
+  color: var(--gray-75);
 }
 
-/* image */
+.profileContainer {
+  margin-top: 10px;
+  align-self: flex-start;
+}
+
+.credit {
+  margin-top: 14px;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--gray-25);
+  font-family: var(--font-opensans);
+}
+
+/* ===========================
+     酒瓶エリア（カードなし）
+     =========================== */
+
 .image {
-  width: 100%;
+  flex: 0 0 clamp(240px, 26vw, 340px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-@media (min-width: 768px) {
+/* カードは“意味的ラッパー”として残すが見た目はゼロ */
+.sakeCard {
+  width: auto;
+  height: auto;
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+
+  will-change: transform;
+  transition: transform 0.2s ease-out;
+}
+
+/* 酒瓶画像（主役） */
+.sakeImage {
+  width: clamp(180px, 20vw, 280px);
+  height: auto;
+  display: block;
+
+  /* ライト / ダーク共通の自然な影 */
+  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.18))
+    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
+
+  transition: transform 0.35s ease;
+}
+
+/* hoverは画像だけ */
+.sakeImage:hover {
+  transform: translateY(-10px);
+}
+
+/* ダークモード微調整 */
+@media (prefers-color-scheme: dark) {
+  .sakeImage {
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35))
+      drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25));
+  }
+}
+
+/* ===========================
+     銘柄・蔵元
+     =========================== */
+
+.sakeMeta {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.sakeName {
+  display: block;
+  font-family: var(--font-noto-serif-jp);
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+
+  color: var(--foreground);
+}
+
+.sakeBrewery {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--font-notojp);
+  font-size: 0.8rem;
+
+  color: var(--gray-60);
+}
+
+/* ===========================
+     レスポンシブ
+     =========================== */
+
+@media (max-width: 900px) {
+  .flexContainer {
+    gap: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroWrapper {
+    padding: 28px 16px;
+  }
+
+  .flexContainer {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 26px;
+  }
+
   .image {
-    width: 50%;
+    width: 100%;
+    align-items: center;
+  }
+
+  .subtitle {
+    max-width: 52ch;
+  }
+}
+
+@media (max-width: 360px) {
+  .heroTitle {
+    font-size: clamp(2rem, 7vw, 3.2rem);
+    letter-spacing: 0.03em;
+    line-height: 1.12;
   }
 }

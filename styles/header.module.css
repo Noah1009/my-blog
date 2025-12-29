@@ -1,5 +1,25 @@
 /* styles/header.module.css */
-.flexContainer {
-  composes: spaceBetween from "styles/utils.module.css";
+/* ✅ header.module.css - ローカル用 */
+.stickyHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  z-index: 1000;
+  background-color: var(--header-bg-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.flexContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.rightBlock {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }

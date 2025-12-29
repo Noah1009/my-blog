@@ -1,38 +1,60 @@
 // lib/api.ts
 import { createClient } from 'microcms-js-sdk'
 import { eyecatchLocal } from '@/lib/constants'
-import type { Post } from '@/lib/types'
+import type { Post, SakeArticle } from '@/lib/types'
 import { getPlaiceholder } from 'plaiceholder'
 
-// microCMS クライアント初期化
+// =========================
+// microCMS client
+// =========================
+const SERVICE_DOMAIN = process.env.SERVICE_DOMAIN
+const API_KEY = process.env.API_KEY
+
 export const client = createClient({
-  serviceDomain: process.env.SERVICE_DOMAIN || '',
-  apiKey: process.env.API_KEY || '',
+  serviceDomain: SERVICE_DOMAIN || '',
+  apiKey: API_KEY || '',
 })
 
 const isProd = process.env.NODE_ENV === 'production'
 
-// アイキャッチ画像を正規化し、blurDataURLを生成（Plaiceholder v3.0.0対応）
+/**
+ * microCMS 環境変数チェック
+ * ※ 未設定でも即 throw はせず、ログで気づけるようにする
+ */
+function assertMicroCMSConfig(): void {
+  if (!SERVICE_DOMAIN || !API_KEY) {
+    console.error('[microCMS] Missing env config', {
+      SERVICE_DOMAIN: !!SERVICE_DOMAIN,
+      API_KEY: !!API_KEY,
+      NODE_ENV: process.env.NODE_ENV,
+    })
+  }
+}
+
+// =========================
+// eyecatch normalize
+// =========================
 async function normalizeEyecatch(raw: any): Promise<Post['eyecatch']> {
   const url = raw?.url && typeof raw.url === 'string' ? raw.url : eyecatchLocal.url
 
   try {
-    const buffer = await fetch(
-      url.startsWith('/') ? `${process.env.NEXT_PUBLIC_SITE_URL}${url}` : url
-    )
-      .then(res => res.arrayBuffer())
-      .then(buf => Buffer.from(buf))
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    const fetchUrl = url.startsWith('/') ? `${siteUrl}${url}` : url
+
+    const buffer = await fetch(fetchUrl)
+      .then((res) => res.arrayBuffer())
+      .then((buf) => Buffer.from(buf))
 
     const { base64, metadata } = await getPlaiceholder(buffer)
 
     return {
       url,
-      width: metadata.width,
-      height: metadata.height,
+      width: metadata.width ?? eyecatchLocal.width,
+      height: metadata.height ?? eyecatchLocal.height,
       blurDataURL: isProd ? base64 : '',
     }
   } catch (err) {
-    console.error('normalizeEyecatch エラー:', err)
+    console.error('normalizeEyecatch error:', err)
     return {
       url,
       width: eyecatchLocal.width,
@@ -42,21 +64,33 @@ async function normalizeEyecatch(raw: any): Promise<Post['eyecatch']> {
   }
 }
 
-// 全記事取得（ページネーション対応）
-export async function getAllPosts(maxLimit = 100): Promise<Post[]> {
+// =========================
+// NOTES
+// =========================
+
+/**
+ * Notes 一覧取得
+ */
+export async function getAllNotes(maxLimit = 100): Promise<Post[]> {
+  assertMicroCMSConfig()
+
   const all: Post[] = []
   let page = 0
 
   try {
     while (true) {
       const { contents }: { contents: any[] } = await client.get({
-        endpoint: 'blogs',
+        endpoint: 'notes',
         queries: {
+          orders: '-publishDate',
+          // 一覧は軽量でOK（本文は不要）
           fields: 'title,slug,eyecatch,publishDate',
           limit: maxLimit,
           offset: page * maxLimit,
         },
       })
+
+      console.log('[getAllNotes]', page, contents.length)
 
       const enriched: Post[] = await Promise.all(
         contents.map(async ({ slug, title, eyecatch, publishDate }) => ({
@@ -72,106 +106,91 @@ export async function getAllPosts(maxLimit = 100): Promise<Post[]> {
       page++
     }
   } catch (err) {
-    console.error('~~ getAllPosts エラー ~~', err)
+    console.error('~~ getAllNotes error ~~', err)
   }
 
   return all
 }
 
-// slug による記事取得
-export async function getPostBySlug(slug: string): Promise<Post | null> {
+/**
+ * Notes 詳細（slug）
+ * ★本文（body）も取得する
+ */
+export async function getNoteBySlug(slug: string): Promise<Post | null> {
+  assertMicroCMSConfig()
+
   try {
     const { contents }: { contents: any[] } = await client.get({
-      endpoint: 'blogs',
+      endpoint: 'notes',
       queries: {
         filters: `slug[equals]${encodeURIComponent(slug)}`,
         limit: 1,
+        // ★追加：本文フィールド（microCMS側のフィールドIDが body の前提）
+        fields: 'title,slug,eyecatch,publishDate,body',
       },
     })
 
     if (!contents.length) return null
 
-    const post = contents[0]
+    const note = contents[0]
+
     return {
-      ...post,
-      eyecatch: await normalizeEyecatch(post.eyecatch),
+      ...note,
+      eyecatch: await normalizeEyecatch(note.eyecatch),
     }
   } catch (err) {
-    console.error('~~ getPostBySlug エラー ~~', err)
+    console.error('~~ getNoteBySlug error ~~', err)
     return null
   }
 }
 
-// slug 一覧取得
-export async function getAllSlugs(limit = 100): Promise<{ slug: string }[]> {
-  const posts = await getAllPosts(limit)
-  return posts.map(({ slug }) => ({ slug }))
-}
+// =========================
+// SAKE ARTICLES
+// =========================
 
-// 最新記事だけ取得（トップページ用）
-export async function getLatestPosts(limit = 4): Promise<Post[]> {
+/**
+ * 日本酒記事一覧取得
+ */
+export async function getAllSakeArticles(limit = 100): Promise<SakeArticle[]> {
+  assertMicroCMSConfig()
+
   try {
     const { contents }: { contents: any[] } = await client.get({
-      endpoint: 'blogs',
+      endpoint: 'sake-articles',
       queries: {
         limit,
-        orders: '-publishDate',
-        fields: 'title,slug,eyecatch,publishDate',
+        orders: '-publishedAt',
+        fields:
+          'id,title,titleKana,breweryName,prefecture,bottleImage,positioning,isNama,styleTags,serveTemp,cardLead,asOfDate,sourceNote',
       },
     })
 
-    const enriched: Post[] = await Promise.all(
-      contents.map(async ({ slug, title, publishDate, eyecatch }) => ({
-        slug,
-        title,
-        publishDate,
-        eyecatch: await normalizeEyecatch(eyecatch),
-      }))
-    )
-
-    return enriched
+    return contents as SakeArticle[]
   } catch (err) {
-    console.error('~~ getLatestPosts エラー ~~', err)
+    console.error('~~ getAllSakeArticles error ~~', err)
     return []
   }
 }
 
-// カテゴリー一覧取得
-export async function getAllCategories(): Promise<any[]> {
-  try {
-    const { contents }: { contents: any[] } = await client.get({
-      endpoint: 'categories',
-    })
-    return contents
-  } catch (err) {
-    console.error('~~ getAllCategories エラー ~~', err)
-    return []
-  }
-}
+/**
+ * 日本酒記事詳細（ID）
+ */
+export async function getSakeArticleById(id: string): Promise<SakeArticle | null> {
+  assertMicroCMSConfig()
 
-// 特定のカテゴリのスラッグに属する記事を取得
-export async function getPostsByCategorySlug(slug: string): Promise<Post[]> {
   try {
-    const { contents }: { contents: any[] } = await client.get({
-      endpoint: 'blogs',
+    const data = await client.get({
+      endpoint: 'sake-articles',
+      contentId: id,
       queries: {
-        filters: `categories[contains]${slug}`,
-        fields: 'title,slug,eyecatch,publishDate',
+        fields:
+          'id,title,titleKana,breweryName,prefecture,bottleImage,positioning,isNama,styleTags,serveTemp,cardLead,body,asOfDate,sourceNote,designation,abv,rice,polishRate',
       },
     })
 
-    const enriched: Post[] = await Promise.all(
-      contents.map(async ({ slug, title, publishDate, eyecatch }) => ({
-        slug,
-        title,
-        publishDate,
-        eyecatch: await normalizeEyecatch(eyecatch),
-      }))
-    )
-
-    return enriched
+    return data as SakeArticle
   } catch (err) {
-    console.error('~~ getPostsByCategorySlug エラー ~~', err)
-    return []
+    console.error('~~ getSakeArticleById error ~~', err)
+    return null
   }
 }

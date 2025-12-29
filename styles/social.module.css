@@ -3,9 +3,12 @@
   display: flex;
   gap: 1.5em;
   flex-wrap: wrap;
-  /* font-size: var(--icon-size, 24px);*/
+  justify-content: center;
+  padding: 0;
+  list-style: none;
 }
 
+/* スクリーンリーダー用 */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -21,15 +24,54 @@
 .icon {
   width: 24px;
   height: 24px;
+  object-fit: contain;
 }
 
+/* 円形ボタン */
+.circle {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  justify-content: center;
+  align-items: center;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease;
+}
+
+/* ダークモード対応（背景を暗く） */
+@media (prefers-color-scheme: dark) {
+  .circle {
+    background-color: #333;
+  }
+}
+
+/* ホバー効果 */
+.circle:hover {
+  transform: scale(1.1);
+  background-color: #e0e0e0;
+}
+
+/* ダークモードでのホバー背景色 */
+@media (prefers-color-scheme: dark) {
+  .circle:hover {
+    background-color: #444;
+  }
+}
+
+/* レスポンシブ対応 */
 @media (max-width: 480px) {
   .list {
     gap: 1em;
-    display: flex;
   }
   .icon {
     width: 20px;
     height: 20px;
+  }
+  .circle {
+    width: 40px;
+    height: 40px;
   }
 }
