@@ -1,9 +1,16 @@
 // app/sake/[id]/page.tsx
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getSakeArticleById } from '@/lib/api'
 import styles from '@/styles/sake/detail.module.css'
+
+function formatText(value: unknown): string {
+  if (Array.isArray(value)) return value.filter(Boolean).join(' / ').trim()
+  if (typeof value === 'string') return value.trim()
+  return ''
+}
 
 export default async function Page({
   params,
@@ -14,11 +21,18 @@ export default async function Page({
 
   const item = await getSakeArticleById(id)
   if (!item) return notFound()
+  const positioning = formatText(item.positioning)
+  const designation = formatText(item.designation)
+  const rice = formatText(item.rice)
+  const sourceNote = formatText(item.sourceNote)
 
   return (
     <main className={styles.container}>
-      {/* ヘッダー */}
       <header className={styles.header}>
+        <Link href="/sake" className={styles.backLink}>
+          日本酒一覧へ戻る
+        </Link>
+        <p className={styles.kicker}>Sake detail</p>
         <h1 className={styles.title}>{item.title}</h1>
         <p className={styles.meta}>
           {item.breweryName}（{item.prefecture}）
@@ -26,7 +40,6 @@ export default async function Page({
         {item.cardLead && <p className={styles.lead}>{item.cardLead}</p>}
       </header>
 
-      {/* ✅ 画像は2カラムに入れず、ここで大きく表示 */}
       {item.bottleImage?.url && (
         <section className={styles.heroWide}>
           <div className={styles.heroMedia}>
@@ -42,7 +55,6 @@ export default async function Page({
         </section>
       )}
 
-      {/* 2カラム（本文 / スペック） */}
       <div className={styles.layout}>
         <div>
           {item.body && (
@@ -57,18 +69,72 @@ export default async function Page({
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>スペック</h2>
             <ul className={styles.specList}>
-              <li>立ち位置：{item.positioning}</li>
-              <li>推奨温度：{item.serveTemp}</li>
-              <li>生酒：{item.isNama ? 'はい' : 'いいえ'}</li>
-              {!!item.styleTags?.length && <li>酒質タグ：{item.styleTags.join(' / ')}</li>}
+              {positioning && (
+                <li>
+                  <span>立ち位置</span>
+                  <strong>{positioning}</strong>
+                </li>
+              )}
+              {!!item.serveTemp?.length && (
+                <li>
+                  <span>推奨温度</span>
+                  <strong>{item.serveTemp.join(' / ')}</strong>
+                </li>
+              )}
+              {item.isNama && (
+                <li>
+                  <span>状態</span>
+                  <strong>生酒</strong>
+                </li>
+              )}
+              {!!item.styleTags?.length && (
+                <li className={styles.tagRow}>
+                  <span>酒質タグ</span>
+                  <div className={styles.tags}>
+                    {item.styleTags.map((tag) => (
+                      <strong key={tag}>{tag}</strong>
+                    ))}
+                  </div>
+                </li>
+              )}
 
-              {item.designation && <li>特定名称：{item.designation}</li>}
-              {typeof item.abv === 'number' && <li>アルコール度数：{item.abv}%</li>}
-              {item.rice && <li>使用米：{item.rice}</li>}
-              {typeof item.polishRate === 'number' && <li>精米歩合：{item.polishRate}%</li>}
+              {designation && (
+                <li>
+                  <span>特定名称</span>
+                  <strong>{designation}</strong>
+                </li>
+              )}
+              {typeof item.abv === 'number' && (
+                <li>
+                  <span>アルコール度数</span>
+                  <strong>{item.abv}%</strong>
+                </li>
+              )}
+              {rice && (
+                <li>
+                  <span>使用米</span>
+                  <strong>{rice}</strong>
+                </li>
+              )}
+              {typeof item.polishRate === 'number' && (
+                <li>
+                  <span>精米歩合</span>
+                  <strong>{item.polishRate}%</strong>
+                </li>
+              )}
 
-              {item.asOfDate && <li>情報基準日：{item.asOfDate}</li>}
-              {item.sourceNote && <li>情報ソース：{item.sourceNote}</li>}
+              {item.asOfDate && (
+                <li>
+                  <span>情報基準日</span>
+                  <strong>{new Date(item.asOfDate).toLocaleDateString('ja-JP')}</strong>
+                </li>
+              )}
+              {sourceNote && (
+                <li>
+                  <span>情報ソース</span>
+                  <strong>{sourceNote}</strong>
+                </li>
+              )}
             </ul>
           </section>
         </aside>

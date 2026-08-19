@@ -1,9 +1,9 @@
 // app/notes/[slug]/page.tsx
 
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Container from '@/components/container'
 import Hero from '@/components/hero'
-import Meta from '@/components/meta'
 import { getNoteBySlug } from '@/lib/api'
 import { siteMeta } from '@/lib/constants'
 import type { Post } from '@/lib/types'
@@ -13,6 +13,60 @@ type PageProps = {
   params: Promise<{
     slug: string
   }>
+}
+
+// ============================================================
+// 動的ページ用Metadata
+// ============================================================
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params
+
+  const note: Post | null = await getNoteBySlug(slug)
+
+  if (!note) {
+    return {
+      title: '記事が見つかりません',
+    }
+  }
+
+  const title = `${note.title} | ${siteMeta.siteTitle}`
+  const url = `${siteMeta.siteUrl}/notes/${note.slug}`
+
+  return {
+    title,
+    description: note.title,
+
+    alternates: {
+      canonical: url,
+    },
+
+    openGraph: {
+      title,
+      description: note.title,
+      url,
+      siteName: siteMeta.siteTitle,
+      locale: siteMeta.siteLocale,
+      type: 'article',
+
+      images: note.eyecatch?.url
+        ? [
+            {
+              url: note.eyecatch.url,
+              width: note.eyecatch.width,
+              height: note.eyecatch.height,
+            },
+          ]
+        : [
+            {
+              url: `${siteMeta.siteUrl}/images/default-ogp.jpg`,
+              width: 1200,
+              height: 630,
+            },
+          ],
+    },
+  }
 }
 
 export default async function Page({ params }: PageProps) {
@@ -27,15 +81,6 @@ export default async function Page({ params }: PageProps) {
 
   return (
     <Container>
-      <Meta
-        pageTitle={note.title}
-        pageDesc={note.title}
-        pageUrl={`${siteMeta.siteUrl}/notes/${note.slug}`}
-        pageImg={note.eyecatch?.url}
-        pageImgW={note.eyecatch?.width}
-        pageImgH={note.eyecatch?.height}
-      />
-
       <Hero title={note.title} subtitle={note.publishDate} />
 
       {/* ここに本文（body/content）を表示 */}

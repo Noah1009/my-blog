@@ -1,7 +1,6 @@
 // app/page.tsx
 
 import type { JSX } from 'react'
-import Meta from '@/components/meta'
 import Container from '@/components/container'
 import Hero from '@/components/hero'
 import Posts from '@/components/posts'
@@ -49,13 +48,6 @@ export default async function Home(): Promise<JSX.Element> {
 
   return (
     <Container>
-      <Meta
-        pageTitle={siteMeta.siteTitle}
-        pageDesc={siteMeta.siteDesc}
-        pageUrl={`${siteMeta.siteUrl}/`}
-        pageImg="/images/default-ogp.jpg"
-      />
-
       <Hero
         title="日本酒の記憶"
         subtitle="今日の一杯を、未来の自分へ"
@@ -63,6 +55,7 @@ export default async function Home(): Promise<JSX.Element> {
         imageOn={true}
         sakeName="東洋美人 地帆紅"
         breweryName="澄川酒造場（山口県）"
+        showCredit
       >
         <Profile />
       </Hero>

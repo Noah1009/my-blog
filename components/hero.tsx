@@ -14,6 +14,7 @@ type Props = {
   sakeName?: string
   breweryName?: string
   children?: ReactNode
+  showCredit?: boolean // ★追加：クレジット表示制御
 }
 
 export default function Hero({
@@ -24,13 +25,14 @@ export default function Hero({
   sakeName,
   breweryName,
   children,
+  showCredit = false, // ★デフォルトは非表示
 }: Props): JSX.Element {
-  /* ★追加: スクロール量（0〜1） */
+  /* ★スクロール量（0〜1） */
   const [scrollRatio, setScrollRatio] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => {
-      const max = 300 // ★Hero内で完結させる距離
+      const max = 300 // Hero内で完結させる距離
       const y = Math.min(window.scrollY, max)
       setScrollRatio(y / max)
     }
@@ -48,7 +50,7 @@ export default function Hero({
             <div
               className={styles.sakeCard}
               style={{
-                /* ★追加: 最大10pxだけ下に流れる */
+                /* 最大10pxだけ下に流れる */
                 transform: `translateY(${scrollRatio * 10}px)`,
               }}
             >
@@ -64,7 +66,9 @@ export default function Hero({
 
             {(sakeName || breweryName) && (
               <figcaption className={styles.sakeMeta}>
-                {sakeName && <span className={styles.sakeName}>{sakeName}</span>}
+                {sakeName && (
+                  <span className={styles.sakeName}>{sakeName}</span>
+                )}
                 {breweryName && (
                   <span className={styles.sakeBrewery}>{breweryName}</span>
                 )}
@@ -79,8 +83,15 @@ export default function Hero({
             {title}
           </h1>
           <p className={styles.subtitle}>{subtitle}</p>
+
           <div className={styles.profileContainer}>{children}</div>
-          <p className={styles.credit}>🍶　URASAKIによって作られました</p>
+
+          {/* ★トップページのみ表示 */}
+          {showCredit && (
+            <p className={styles.credit}>
+              🍶　URASAKIによって作られました
+            </p>
+          )}
         </div>
       </div>
     </section>

@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title,
       description,
-      url: `${siteMeta.siteUrl}/blog/category/${slug}`,
+      url: `${siteMeta.siteUrl}/notes/category/${slug}`,
     },
     twitter: {
       card: 'summary',

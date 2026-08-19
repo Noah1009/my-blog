@@ -4,7 +4,6 @@
 import type { JSX } from 'react'
 import { useEffect } from "react";
 import Link from "next/link";
-import Meta from "@/components/meta";
 import Container from "@/components/container";
 import Hero from "@/components/hero";
 import { motion } from "framer-motion";
@@ -20,8 +19,6 @@ export default function NotFound(): JSX.Element {
 
   return (
     <Container>
-      <Meta pageTitle="404 - Page not found" />
-
       <motion.div
         className={styles.wrapper}
         initial={{ opacity: 0, y: 30 }}

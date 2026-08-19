@@ -11,16 +11,33 @@ import Script from 'next/script'
 import { savoyeLET, openSans, notoSansJP, lora, notoSerifJP, zenAntiqueSoft } from "@/lib/fonts";
 
 export const metadata: Metadata = {
+  // Metadata APIの相対URL解決用
+  metadataBase: new URL(siteMeta.siteUrl),
+
   title: siteMeta.siteTitle,
   description: siteMeta.siteDesc,
+
+  // canonical URL
+  alternates: {
+    canonical: '/',
+  },
+
+  // favicon / Apple Touch Icon
+  icons: {
+    icon: siteMeta.siteIcon,
+    apple: siteMeta.siteIcon,
+  },
+
   openGraph: {
     title: siteMeta.siteTitle,
     description: siteMeta.siteDesc,
-    url: siteMeta.siteUrl,
+    url: '/',
     siteName: siteMeta.siteTitle,
+    locale: siteMeta.siteLocale,
+    type: 'website',
     images: [
       {
-        url: `${siteMeta.siteUrl}/images/default-ogp.jpg`,
+        url: '/images/default-ogp.jpg',
         width: 1200,
         height: 630,
       },
