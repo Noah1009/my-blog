@@ -33,7 +33,7 @@ const Posts: FC<PostsProps> = ({ posts, basePath = '/blog' }) => {
                   sizes="(min-width: 768px) 50vw, 100vw"
                   placeholder={hasBlur ? 'blur' : undefined}
                   blurDataURL={hasBlur ? eyecatch!.blurDataURL : undefined}
-                  style={{ objectFit: 'cover' }}
+                  style={{ objectFit: 'contain' }}
                 />
               </div>
 
