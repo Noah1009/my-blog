@@ -35,11 +35,12 @@ export default async function Notes(): Promise<JSX.Element> {
     slug: sake.id, // ★クリック先で /sake/{id} を作るため id を入れる
     title: sake.title,
     publishDate: sake.asOfDate ?? '',
-    eyecatch: sake.bottleImage?.url
+    // Notes一覧のカードはOGP画像を優先し、未設定時のみボトル画像へフォールバック
+    eyecatch: (sake.ogpImage || sake.bottleImage)?.url
       ? {
-          url: sake.bottleImage.url,
-          width: sake.bottleImage.width ?? 600,
-          height: sake.bottleImage.height ?? 900,
+          url: (sake.ogpImage || sake.bottleImage)!.url,
+          width: (sake.ogpImage || sake.bottleImage)!.width ?? 1200,
+          height: (sake.ogpImage || sake.bottleImage)!.height ?? 630,
         }
       : undefined,
   }))

@@ -161,7 +161,7 @@ export async function getAllSakeArticles(limit = 100): Promise<SakeArticle[]> {
         limit,
         orders: '-publishedAt',
         fields:
-          'id,title,titleKana,breweryName,prefecture,bottleImage,positioning,isNama,styleTags,serveTemp,cardLead,asOfDate,sourceNote',
+          'id,title,titleKana,breweryName,prefecture,bottleImage,ogpImage,positioning,isNama,styleTags,serveTemp,cardLead,asOfDate,sourceNote',
       },
     })
 

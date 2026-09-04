@@ -31,13 +31,13 @@ export default async function Home(): Promise<JSX.Element> {
     title: sake.title,
     // publishDate は日本酒に必須ではないので、基準日があれば使う／なければ空文字
     publishDate: sake.asOfDate ?? '',
-    // eyecatch は bottleImage を流用（blurDataURLは任意なので未設定でOK）
-    eyecatch: sake.bottleImage?.url
+    // トップページのカードはOGP画像を優先し、未設定時のみボトル画像へフォールバック
+    eyecatch: (sake.ogpImage || sake.bottleImage)?.url
       ? {
-          url: sake.bottleImage.url,
+          url: (sake.ogpImage || sake.bottleImage)!.url,
           // width/height が無い場合に備えて最低限の値を入れる（表示崩れ防止）
-          width: sake.bottleImage.width ?? 600,
-          height: sake.bottleImage.height ?? 900,
+          width: (sake.ogpImage || sake.bottleImage)!.width ?? 1200,
+          height: (sake.ogpImage || sake.bottleImage)!.height ?? 630,
         }
       : undefined,
     // categories は使わない想定なので付けない（Post型で任意ならOK）
