@@ -2,14 +2,54 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getSakeArticleById } from '@/lib/api'
+import { siteMeta } from '@/lib/constants'
 import styles from '@/styles/sake/detail.module.css'
 
 function formatText(value: unknown): string {
   if (Array.isArray(value)) return value.filter(Boolean).join(' / ').trim()
   if (typeof value === 'string') return value.trim()
   return ''
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+  const { id } = await params
+  const item = await getSakeArticleById(id)
+
+  if (!item) return {}
+
+  const description = item.cardLead || siteMeta.siteDesc
+  const image = item.ogpImage || item.heroImage || item.bottleImage
+  const canonical = `/sake/${id}`
+
+  return {
+    title: `${item.title} | ${siteMeta.siteTitle}`,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title: item.title,
+      description,
+      url: canonical,
+      siteName: siteMeta.siteTitle,
+      locale: siteMeta.siteLocale,
+      type: 'article',
+      images: image
+        ? [{ url: image.url, width: image.width, height: image.height }]
+        : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: item.title,
+      description,
+      images: image ? [image.url] : undefined,
+    },
+  }
 }
 
 export default async function Page({
@@ -40,11 +80,11 @@ export default async function Page({
         {item.cardLead && <p className={styles.lead}>{item.cardLead}</p>}
       </header>
 
-      {item.bottleImage?.url && (
+      {(item.heroImage?.url || item.bottleImage?.url) && (
         <section className={styles.heroWide}>
           <div className={styles.heroMedia}>
             <Image
-              src={item.bottleImage.url}
+              src={(item.heroImage || item.bottleImage)!.url}
               alt={item.title}
               width={1200}
               height={630}

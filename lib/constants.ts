@@ -2,7 +2,7 @@
 export const siteMeta = {
   siteTitle: '日本酒の記憶',
   siteDesc: '今日の一杯を、未来の自分へ',
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://my-blog-9skw.vercel.app',
   siteLang: 'ja',
   siteLocale: 'ja_JP',
   siteType: 'website',

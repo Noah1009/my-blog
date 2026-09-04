@@ -184,7 +184,7 @@ export async function getSakeArticleById(id: string): Promise<SakeArticle | null
       contentId: id,
       queries: {
         fields:
-          'id,title,titleKana,breweryName,prefecture,bottleImage,positioning,isNama,styleTags,serveTemp,cardLead,body,asOfDate,sourceNote,designation,abv,rice,polishRate',
+          'id,title,titleKana,breweryName,prefecture,bottleImage,heroImage,ogpImage,positioning,isNama,styleTags,serveTemp,cardLead,body,asOfDate,sourceNote,designation,abv,rice,polishRate',
       },
     })
 

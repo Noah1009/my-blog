@@ -37,6 +37,18 @@ export type SakeArticle = {
     height?: number
   }
 
+  heroImage?: {
+    url: string
+    width?: number
+    height?: number
+  }
+
+  ogpImage?: {
+    url: string
+    width?: number
+    height?: number
+  }
+
   positioning?: string
   isNama?: boolean
   styleTags?: string[]
