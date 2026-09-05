@@ -20,6 +20,8 @@ export const metadata = {
   description: siteMeta.siteDesc,
 }
 
+export const revalidate = 60
+
 export default async function Home(): Promise<JSX.Element> {
   // 変更：日本酒記事を取得（最新順の想定：lib/api.ts 側で orders を設定している前提）
   const sakeItems: SakeArticle[] = await getAllSakeArticles(3)

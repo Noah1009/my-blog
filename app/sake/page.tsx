@@ -9,6 +9,8 @@ export const metadata = {
   description: '日本酒の記録一覧',
 }
 
+export const revalidate = 60
+
 export default async function Page() {
   const items = await getAllSakeArticles(100)
 
