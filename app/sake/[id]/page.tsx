@@ -80,11 +80,11 @@ export default async function Page({
         {item.cardLead && <p className={styles.lead}>{item.cardLead}</p>}
       </header>
 
-      {(item.heroImage?.url || item.bottleImage?.url) && (
+      {(item.ogpImage?.url || item.heroImage?.url || item.bottleImage?.url) && (
         <section className={styles.heroWide}>
           <div className={styles.heroMedia}>
             <Image
-              src={(item.heroImage || item.bottleImage)!.url}
+              src={(item.ogpImage || item.heroImage || item.bottleImage)!.url}
               alt={item.title}
               width={1200}
               height={630}
